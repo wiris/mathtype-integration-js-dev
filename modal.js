@@ -312,6 +312,11 @@ class ModalWindow {
 
         this.properties.open = true;
         this.properties.created = true;
+
+        // If actual language is arabic modal starts at left of window browser
+        if (_wrs_int_langCode == 'ar') {
+            this.container.style.right = window.innerWidth - this.scrollbarWidth - this.container.offsetWidth + 'px';
+        }
     }
 
     /**
