@@ -314,7 +314,7 @@ class ModalWindow {
         this.properties.created = true;
 
         // If actual language is arabic modal starts at left of window browser
-        if (_wrs_int_langCode == 'ar') {
+        if (this.isRTL(_wrs_int_langCode)) {
             this.container.style.right = window.innerWidth - this.scrollbarWidth - this.container.offsetWidth + 'px';
         }
     }
@@ -464,6 +464,17 @@ class ModalWindow {
         return false;
     }
 
+    /**
+     * @param {string} actual language to check if it's rtl
+     * @return {boolean} return true if current language is type RTL
+     * @ignore
+     */
+     isRTL(language) {
+        if (_wrs_int_langCode == 'ar' || _wrs_int_langCode == 'he') {
+            return true;
+        }
+        return false;
+     }
     /**
      * Adds a class to all modal DOM elements.
      * @param {string} cls
