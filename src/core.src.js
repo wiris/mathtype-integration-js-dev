@@ -432,6 +432,9 @@ export default class Core {
                     range = editorSelection.getRangeAt(0);
                 }
 
+                // Delete if something was surrounded.
+                range.deleteContents();
+
                 let node = range.startContainer;
                 const position = range.startOffset;
 
