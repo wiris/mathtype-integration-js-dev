@@ -356,4 +356,16 @@ export default class IntegrationModel {
     notifyWindowClosed() {
         // Nothing.
     }
+
+    /**
+     * Extracts mathml of a determined text node. This function is used as a wrapper inside core.js
+     * in order to get mathml from a text node that can contain normal LaTeX or other chosen text.
+     * @param {string} textNode test to extract LaTeX
+     * @param {int} caretPosition starting position to find LaTeX.
+     * @return {string} mathml that it's inside the text node.
+     * @ignore
+     */
+    getMathmlFromTextNode() {
+        // Nothing.
+    }
 }
