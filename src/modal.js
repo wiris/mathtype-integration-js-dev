@@ -39,6 +39,7 @@ export default class ModalDialog {
         // TODO: Detect isMobile without using editor metrics.
         var isMobile = (landscape && this.attributes.height > deviceHeight) || (portrait && this.attributes.width > deviceWidth) ? true : false;
 
+        this.numberIdInstance = document.getElementsByClassName("wrs_modal_title_bar wrs_modal_desktop").length + 1;
         // Device object properties.
 
         this.deviceProperties = {
@@ -59,76 +60,77 @@ export default class ModalDialog {
 
         var attributes = {};
         attributes.class = 'wrs_modal_overlay';
-        attributes.id = attributes.class + '_id';
+        attributes.id = attributes.class + '_id_' + this.numberIdInstance;
         this.overlay = Util.createElement('div', attributes);
 
         attributes = {};
         attributes.class = 'wrs_modal_title_bar';
-        attributes.id = attributes.class + '_id';
+        attributes.id = attributes.class + '_id_' + this.numberIdInstance;
         this.titleBar = Util.createElement('div', attributes);
 
         attributes = {};
         attributes.class = 'wrs_modal_title';
-        attributes.id = attributes.class + '_id';
+        attributes.id = attributes.class + '_id_' + this.numberIdInstance;
         this.title = Util.createElement('div', attributes);
         this.title.innerHTML = '';
 
         attributes = {};
         attributes.class = 'wrs_modal_close_button';
-        attributes.id = attributes.class + '_id';
+        attributes.id = attributes.class + '_id_' + this.numberIdInstance;
         attributes.title = Core.getStringManager().getString('close');
         this.closeDiv = Util.createElement('a', attributes);;
         this.closeDiv.setAttribute('role','button');
 
         attributes = {};
         attributes.class = 'wrs_modal_stack_button';
-        attributes.id = attributes.class + '_id';
+        attributes.id = attributes.class + '_id_' + this.numberIdInstance;
         attributes.title = "Exit full-screen";
         this.stackDiv = Util.createElement('a', attributes);
         this.stackDiv.setAttribute('role','button');
 
         attributes = {};
         attributes.class = 'wrs_modal_maximize_button';
-        attributes.id = attributes.class + '_id';
+        attributes.id = attributes.class + '_id_' + this.numberIdInstance;
         attributes.title = Core.getStringManager().getString('fullscreen');
         this.maximizeDiv = Util.createElement('a', attributes);
         this.maximizeDiv.setAttribute('role','button');
 
         attributes = {};
         attributes.class = 'wrs_modal_minimize_button';
-        attributes.id = attributes.class + '_id';
+        attributes.id = attributes.class + '_id_' + this.numberIdInstance;
         attributes.title = Core.getStringManager().getString('minimise');
         this.minimizeDiv = Util.createElement('a', attributes);
         this.minimizeDiv.setAttribute('role','button');
 
         attributes = {};
         attributes.class = 'wrs_modal_dialogContainer';
-        attributes.id = attributes.class + '_id';
+        attributes.id = attributes.class + '_id_' + this.numberIdInstance;
         this.container = Util.createElement('div', attributes);
 
         attributes = {};
         attributes.class = 'wrs_modal_wrapper';
-        attributes.id = attributes.class + '_id';
+        attributes.id = attributes.class + '_id_' + this.numberIdInstance;
         this.wrapper = Util.createElement('div', attributes);
 
         attributes = {};
         attributes.class = 'wrs_content_container';
-        attributes.id = attributes.class + '_id';
+        attributes.id = attributes.class + '_id_' + this.numberIdInstance;
         this.contentContainer = Util.createElement('div', attributes);
 
         attributes = {};
         attributes.class = 'wrs_modal_controls';
-        attributes.id = attributes.class + '_id';
+        attributes.id = attributes.class + '_id_' + this.numberIdInstance;
         this.controls = Util.createElement('div', attributes);
 
         attributes = {};
         attributes.class = 'wrs_modal_buttons_container';
-        attributes.id = attributes.class + '_id';
+        attributes.id = attributes.class + '_id_' + this.numberIdInstance;
         this.buttonContainer = Util.createElement('div', attributes);
 
         // Buttons: all button must be created using createSubmitButton method.
         this.submitButton = this.createSubmitButton(
             {
+                id: 'wrs_modal_button_accept' + '_id_' + this.numberIdInstance,
                 class: 'wrs_modal_button_accept',
                 innerHTML: Core.getStringManager().getString('accept')
             },
@@ -137,6 +139,7 @@ export default class ModalDialog {
 
         this.cancelButton = this.createSubmitButton(
             {
+                id: 'wrs_modal_button_cancel' + '_id_' + this.numberIdInstance,
                 class: 'wrs_modal_button_cancel',
                 innerHTML: Core.getStringManager().getString('cancel')
             },
@@ -236,7 +239,7 @@ export default class ModalDialog {
     createSubmitButton(properties, callback) {
         function SubmitButton(properties, callback) {
             this.element = document.createElement('button');
-            this.element.id = properties.class + '_id';
+            this.element.id = properties.id;
             this.element.className = properties.class;
             this.element.innerHTML = properties.innerHTML;
             Util.addEvent(this.element, 'click', callback);
@@ -921,7 +924,7 @@ export default class ModalDialog {
         if (this.properties.state == 'minimized') {
             return;
         }
-        if (ev.target.className == 'wrs_modal_title') {
+        if (ev.target === this.title) {
             if(typeof this.dragDataObject === 'undefined' || this.dragDataObject === null) {
                 ev = ev || event;
                 // Save first click mouse point on screen
