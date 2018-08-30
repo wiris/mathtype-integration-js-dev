@@ -39,7 +39,7 @@ export default class ModalDialog {
         // TODO: Detect isMobile without using editor metrics.
         var isMobile = (landscape && this.attributes.height > deviceHeight) || (portrait && this.attributes.width > deviceWidth) ? true : false;
 
-        this.numberIdInstance = document.getElementsByClassName("wrs_modal_title_bar wrs_modal_desktop").length + 1;
+        this.numberIdInstance = document.getElementsByClassName("wrs_modal_dialogContainer").length + 1;
         // Device object properties.
 
         this.deviceProperties = {
