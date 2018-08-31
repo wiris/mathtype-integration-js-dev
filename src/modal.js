@@ -40,7 +40,7 @@ export default class ModalDialog {
         var isMobile = (landscape && this.attributes.height > deviceHeight) || (portrait && this.attributes.width > deviceWidth) ? true : false;
 
         // Obtain number of current instance
-        this.instanceId = document.getElementsByClassName("wrs_modal_dialogContainer").length + 1;
+        this.instanceId = document.getElementsByClassName("wrs_modal_dialogContainer").length;
 
         // Device object properties.
 
@@ -1318,6 +1318,6 @@ export default class ModalDialog {
      * @ignore
      */
     getElementId(className) {
-        return className + "_id_" + this.instanceId;
+        return className + "[" + this.instanceId + "]";
     }
 }
