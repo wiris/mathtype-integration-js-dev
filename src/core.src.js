@@ -285,7 +285,7 @@ export default class Core {
         var fileRef = document.createElement("link");
         fileRef.setAttribute("rel", "stylesheet");
         fileRef.setAttribute("type", "text/css");
-        fileRef.setAttribute("href", Util.concatenateUrl(this.integrationModel.getPath(), '/core/modal.css'));
+        fileRef.setAttribute("href", Util.concatenateUrl(this.integrationModel.getPath(), '/core/styles.css'));
         document.getElementsByTagName("head")[0].appendChild(fileRef);
     }
 
