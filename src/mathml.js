@@ -240,7 +240,7 @@ export default class MathML {
      * @param {string} text - string that can contain xml mathml ocurrences.
      * @returns {string} - 'text' with all xml mathml ocurrences without annotation tag.
      */
-    static removeSemanticsMathml(text) {
+    static removeSemanticsMathmlOcurrences(text) {
         const mathTagStart = '<math';
         const mathTagEnd = '</math>';
         const mathTagEndline = '/>';

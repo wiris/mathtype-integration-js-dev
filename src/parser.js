@@ -272,7 +272,9 @@ export default class Parser {
     static endParse(code) {
         const codeEndParsedEditMode = Parser.endParseEditMode(code);
         const codeEndParseSaveMode = Parser.endParseSaveMode(codeEndParsedEditMode);
-        const codeWithoutSemantics = MathML.removeSemanticsMathml(codeEndParseSaveMode);
+        const codeWithoutSemantics = Configuration.get('saveMathMLSemantics')
+            ? codeEndParseSaveMode
+            : MathML.removeSemanticsMathmlOcurrences(codeEndParseSaveMode);
         return codeWithoutSemantics;
     }
 
