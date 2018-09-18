@@ -270,8 +270,10 @@ export default class Parser {
      * @returns {string} the HTML code parsed.
      */
     static endParse(code) {
-        code = Parser.endParseEditMode(code);
-        return Parser.endParseSaveMode(code);
+        const codeEndParsedEditMode = Parser.endParseEditMode(code);
+        const codeEndParseSaveMode = Parser.endParseSaveMode(codeEndParsedEditMode);
+        const codeWithoutSemantics = MathML.removeSemanticsMathml(codeEndParseSaveMode);
+        return codeWithoutSemantics;
     }
 
     /**

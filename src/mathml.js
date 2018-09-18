@@ -235,6 +235,55 @@ export default class MathML {
     }
 
     /**
+     * Transforms all xml mathml ocurrences that contain semantics to the same
+     * xml mathml ocurrences without semantics.
+     * @param {string} text - string that can contain xml mathml ocurrences.
+     * @returns {string} - 'text' with all xml mathml ocurrences without annotation tag.
+     */
+    static removeSemanticsMathml(text) {
+        const mathTagStart = '<math';
+        const mathTagEnd = '</math>';
+        const mathTagEndline = '/>';
+        const tagCloser = '>';
+        const semanticsTagStart = '<semantics>';
+        const annotationTagStart = '<annotation';
+
+        let output = '';
+        let start = text.indexOf(mathTagStart);
+        let end = 0;
+        while (start !== -1) {
+            output += text.substring(end, start);
+
+            // MathML can be written as '<math></math>' or '<math />'.
+            const mathTagEndIndex = text.indexOf(mathTagEnd, start);
+            const mathTagEndlineIndex = text.indexOf(mathTagEndline, start);
+            const firstTagCloser = text.indexOf(tagCloser, start);
+            if (mathTagEndIndex !== -1) {
+                end = mathTagEndIndex;
+            }
+            else if (mathTagEndlineIndex === firstTagCloser - 1) {
+                end = mathTagEndlineIndex;
+            }
+
+            const semanticsIndex = text.indexOf(semanticsTagStart, start);
+            if (semanticsIndex !== -1) {
+                const mmlTagStart = text.substring(start, semanticsIndex);
+                const annotationIndex = text.indexOf(annotationTagStart, start);
+                const mmlContent = text.substring(semanticsIndex + semanticsTagStart.length, annotationIndex);
+                output += mmlTagStart + mmlContent + mathTagEnd;
+                start = text.indexOf(mathTagStart, start + mathTagStart.length);
+            }
+            else {
+                end = start;
+                start = text.indexOf(mathTagStart, start + mathTagStart.length);
+            }
+        }
+
+        output += text.substring(end, text.length);
+        return output;
+    }
+
+    /**
      * Returns true if a MathML contains a certain class.
      * @param {string} mathML - input MathML.
      * @param {string} className - className.
