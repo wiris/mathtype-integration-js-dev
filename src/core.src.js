@@ -503,11 +503,14 @@ export default class Core {
             Util.updateExistingTextOnTextarea(focusElement, element.textContent, item.startPosition, item.endPosition);
         }
         else {
-            if (!element) { // Editor empty, formula has been erased on edit.
+            if (element && element.nodeName.toLowerCase() === 'img') { // Editor empty, formula has been erased on edit.
+                // Clone is needed to maintain event references to temporalImage.
+                Image.clone(element, this.editionProperties.temporalImage);
+            }
+            else {
                 this.editionProperties.temporalImage.remove();
             }
-            // Change the outer html instead to replace all the node to maintain external references.
-            Image.copyImage(element, this.editionProperties.temporalImage);
+
             this.placeCaretAfterNode(this.editionProperties.temporalImage);
         }
     }

@@ -6,25 +6,33 @@ import Util from './util.js';
  */
 export default class Image {
     /**
-     * Copy formula attributes from 'originImg' to 'destImg'.
+     * Clone Wirisformula attributes from 'originImg' to 'destImg'.
      * @param {HTMLImageElement} originImg - formula to copy to 'destImg'. Is a Wirisformula.
      * @param {HTMLImageElement} destImg - formula where 'destImg' copies. Is a Wirisformula.
      */
-    static copyImage(originImg, destImg) {
-        const mathmlAttributeName = Configuration.get('imageMathmlAttribute');
-        destImg.setAttribute(mathmlAttributeName, originImg.getAttribute(mathmlAttributeName));
-        destImg.setAttribute('alt', originImg.getAttribute('alt'));
-        destImg.setAttribute('height', originImg.getAttribute('height'));
-        destImg.setAttribute('width', originImg.getAttribute('width'));
-        destImg.setAttribute('style', originImg.getAttribute('style'));
-        destImg.setAttribute('src', originImg.getAttribute('src'));
-        // FIXME: data-custom-editor is not in conf.
-        const customEditorAttr = 'data-custom-editor';
-        if (originImg.hasAttribute(customEditorAttr)) {
-            destImg.setAttribute(customEditorAttr, originImg.getAttribute(customEditorAttr));
+    static clone(originImg, destImg) {
+        const customEditorAttributeName = 'data-custom-editor';
+        if (!originImg.hasAttribute(customEditorAttributeName)) {
+            destImg.removeAttribute(customEditorAttributeName);
         }
-        else {
-            destImg.removeAttribute(customEditorAttr);
+
+        const mathmlAttributeName = Configuration.get('imageMathmlAttribute');
+        const imgAttributes = [
+            mathmlAttributeName,
+            customEditorAttributeName,
+            'alt',
+            'height',
+            'width',
+            'style',
+            'src',
+            'role'
+        ];
+
+        for (const iterator of imgAttributes) {
+            const originAttribute = originImg.getAttribute(iterator);
+            if (originAttribute) {
+                destImg.setAttribute(iterator, originAttribute);
+            }
         }
     }
 
