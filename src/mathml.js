@@ -258,15 +258,20 @@ export default class MathML {
      * Transforms all xml mathml ocurrences that contain semantics to the same
      * xml mathml ocurrences without semantics.
      * @param {string} text - string that can contain xml mathml ocurrences.
+     * @param {string} [encoding] - encoding name that semantics need to have to be removed.
+     * 'application/json' by default. 'application/json' removes hand traces.
+     * @param {Constants} [characters] - Constant object containing xmlCharacters or safeXmlCharacters relation.
+     * xmlCharacters by default.
      * @returns {string} - 'text' with all xml mathml ocurrences without annotation tag.
      */
-    static removeSemanticsOcurrences(text) {
-        const mathTagStart = '<math';
-        const mathTagEnd = '</math>';
-        const mathTagEndline = '/>';
-        const tagCloser = '>';
-        const semanticsTagStart = '<semantics>';
-        const annotationTagStart = '<annotation';
+    static removeSemanticsOcurrences(text, characters = Constants.xmlCharacters, encoding = 'application/json') {
+        const mathTagStart = characters.tagOpener + 'math';
+        const mathTagEnd = characters.tagOpener + '/math' + characters.tagCloser;
+        const mathTagEndline = '/' + characters.tagCloser;
+        const tagCloser = characters.tagCloser;
+        const semanticsTagStart = characters.tagOpener + 'semantics' + characters.tagCloser;
+        const annotationTagStart = characters.tagOpener + 'annotation encoding=' +
+                                   characters.doubleQuote + encoding + characters.doubleQuote + characters.tagCloser;
 
         let output = '';
         let start = text.indexOf(mathTagStart);
@@ -289,9 +294,16 @@ export default class MathML {
             if (semanticsIndex !== -1) {
                 const mmlTagStart = text.substring(start, semanticsIndex);
                 const annotationIndex = text.indexOf(annotationTagStart, start);
-                const mmlContent = text.substring(semanticsIndex + semanticsTagStart.length, annotationIndex);
-                output += mmlTagStart + mmlContent + mathTagEnd;
-                start = text.indexOf(mathTagStart, start + mathTagStart.length);
+                if (annotationIndex !== -1) {
+                    const mmlContent = text.substring(semanticsIndex + semanticsTagStart.length, annotationIndex);
+                    output += mmlTagStart + mmlContent + mathTagEnd;
+                    start = text.indexOf(mathTagStart, start + mathTagStart.length);
+                    end += mathTagEnd.length;
+                }
+                else {
+                    end = start;
+                    start = text.indexOf(mathTagStart, start + mathTagStart.length);
+                }
             }
             else {
                 end = start;

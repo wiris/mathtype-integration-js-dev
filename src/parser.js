@@ -270,12 +270,11 @@ export default class Parser {
      * @returns {string} the HTML code parsed.
      */
     static endParse(code) {
-        const codeEndParsedEditMode = Parser.endParseEditMode(code);
-        const codeEndParseSaveMode = Parser.endParseSaveMode(codeEndParsedEditMode);
-        const codeWithoutSemantics = Configuration.get('saveMathMLSemantics')
-            ? codeEndParseSaveMode
-            : MathML.removeSemanticsOcurrences(codeEndParseSaveMode);
-        return codeWithoutSemantics;
+        // Transform img elements to MathML elements.
+        const codeEndParseSaveMode = Parser.endParseSaveMode(code);
+        // Transform LaTeX ocurrences to MathML elements.
+        const codeEndParsedEditMode = Parser.endParseEditMode(codeEndParseSaveMode);
+        return codeEndParsedEditMode;
     }
 
     /**
@@ -387,7 +386,6 @@ export default class Parser {
      */
     static codeImgTransform(code, mode) {
         var output = '';
-
         var endPosition = 0;
         var pattern = /<img/gi;
         var patternLength = pattern.source.length;
