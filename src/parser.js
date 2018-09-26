@@ -270,11 +270,11 @@ export default class Parser {
      * @returns {string} the HTML code parsed.
      */
     static endParse(code) {
-        // Transform img elements to MathML elements.
-        const codeEndParseSaveMode = Parser.endParseSaveMode(code);
         // Transform LaTeX ocurrences to MathML elements.
-        const codeEndParsedEditMode = Parser.endParseEditMode(codeEndParseSaveMode);
-        return codeEndParsedEditMode;
+        const codeEndParsedEditMode = Parser.endParseEditMode(code);
+        // Transform img elements to MathML elements.
+        const codeEndParseSaveMode = Parser.endParseSaveMode(codeEndParsedEditMode);
+        return codeEndParseSaveMode;
     }
 
     /**

@@ -593,7 +593,7 @@ export default class Util {
                 }
 
                 var xmlCode = imgObject.getAttribute(Configuration.get('imageMathmlAttribute'));
-                if (!Configuration.get('saveMathMLSemantics')) {
+                if (!Configuration.get('saveHandTraces')) {
                     xmlCode = MathML.removeSemanticsOcurrences(xmlCode, Constants.safeXmlCharacters);
                 }
 
