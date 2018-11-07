@@ -550,9 +550,9 @@ export default class ModalDialog {
      */
     lockWebsiteScroll() {
         this.websiteBeforeLockParameters = {
-            bodyStylePosition: document.body.style.position,
-            bodyStyleOverflow: document.body.style.overflow,
-            htmlStyleOverflow: document.documentElement.style.overflow,
+            bodyStylePosition: document.body.style.position ? document.body.style.position : '',
+            bodyStyleOverflow: document.body.style.overflow ? document.body.style.overflow : '',
+            htmlStyleOverflow: document.documentElement.style.overflow ? document.documentElement.style.overflow : '',
             windowScrollX: window.scrollX,
             windowScrollY: window.scrollY
         };
