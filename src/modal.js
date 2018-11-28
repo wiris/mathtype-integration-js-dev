@@ -58,7 +58,6 @@ export default class ModalDialog {
             size :  {height: 338, width: 580}
         };
 
-        // Object to keep website's style before change it on lock scroll for mobile devices.
         /**
          * Object to keep website's style before change it on lock scroll for mobile devices.
          * @type {Object}
