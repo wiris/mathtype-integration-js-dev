@@ -442,7 +442,7 @@ export default class ModalDialog {
       this.restoreWebsiteScale();
       this.lockWebsiteScroll();
       // Due to editor wait we need to wait until editor focus.
-      setTimeout(() => { this.hideKeyboard(); }, 400);
+      setTimeout(this.hideKeyboard.bind(this), 400);
     }
 
     // New modal window. He need to create the whole object.
