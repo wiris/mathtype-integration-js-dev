@@ -196,7 +196,6 @@ export default class ContentManager {
 
       // iOS events.
       if (this.modalDialogInstance.deviceProperties.isIOS) {
-        setTimeout(function hide() { this.modalDialogInstance.hideKeyboard(); }, 400);
         const formulaDisplayDiv = document.getElementsByClassName('wrs_formulaDisplay')[0];
         Util.addEvent(formulaDisplayDiv, 'focus', this.modalDialogInstance.handleOpenedIosSoftkeyboard);
         Util.addEvent(formulaDisplayDiv, 'blur', this.modalDialogInstance.handleClosedIosSoftkeyboard);
