@@ -458,29 +458,31 @@ export default class ContentManager {
    */
   onKeyDown(keyboardEvent) {
     if (keyboardEvent.key !== undefined && keyboardEvent.repeat === false) {
+      const editorElement = this.editor.element;
       if (keyboardEvent.key === 'Escape' || keyboardEvent.key === 'Esc') { // Code to detect Esc event.
         // There should be only one element with class name 'wrs_pressed' at the same time.
-        let list = document.getElementsByClassName('wrs_expandButton wrs_expandButtonFor3RowsLayout wrs_pressed');
-        if (list.length === 0) {
-          list = document.getElementsByClassName('wrs_expandButton wrs_expandButtonFor2RowsLayout wrs_pressed');
-          if (list.length === 0) {
-            list = document.getElementsByClassName('wrs_select wrs_pressed');
-            if (list.length === 0) {
-              this.modalDialogInstance.cancelAction();
-              keyboardEvent.stopPropagation();
-              keyboardEvent.preventDefault();
-            }
-          }
+        const list = editorElement.querySelector('[class="wrs_pressed"]');
+        if (!list) { // No panel container is opened.
+          this.modalDialogInstance.cancelAction();
+          keyboardEvent.stopPropagation();
+          keyboardEvent.preventDefault();
         }
       } else if (keyboardEvent.shiftKey && keyboardEvent.key === 'Tab') { // Code to detect shift Tab event.
-        if (document.activeElement === this.modalDialogInstance.submitButton) {
+        const useKeyboardButton = editorElement.querySelector('[title="Use keyboard"]');
+        if (document.activeElement === this.modalDialogInstance.submitButton
+          && document.activeElement !== useKeyboardButton) {
           // Focus is on OK button.
-          this.editor.focus();
+          if (editorElement.classList.contains('wrs_handOpen')) { // Hand mode is active.
+            useKeyboardButton.focus();
+          } else {
+            this.editor.focus();
+          }
           keyboardEvent.stopPropagation();
           keyboardEvent.preventDefault();
         } else {
-          const element = document.querySelector('[title="Manual"]');
-          if (document.activeElement === element) {
+          const editorHelpButton = editorElement.querySelector('[title="Manual"]');
+          if (document.activeElement === editorHelpButton
+            || document.activeElement === useKeyboardButton) {
             // Focus is on editor help.
             this.modalDialogInstance.cancelButton.focus();
             keyboardEvent.stopPropagation();
@@ -489,15 +491,20 @@ export default class ContentManager {
         }
       } else if (keyboardEvent.key === 'Tab') { // Code to detect Tab event.
         if (document.activeElement === this.modalDialogInstance.cancelButton) {
-          // Focus is on cancel button.
-          const element = document.querySelector('[title="Manual"]');
-          element.focus();
+          // Focus is on Cancel button.
+          if (editorElement.classList.contains('wrs_handOpen')) { // Hand mode is active.
+            const useKeyboardButton = editorElement.querySelector('[title="Use keyboard"]');
+            useKeyboardButton.focus();
+          } else {
+            const editorHelpButton = editorElement.querySelector('[title="Manual"]');
+            editorHelpButton.focus();
+          }
           keyboardEvent.stopPropagation();
           keyboardEvent.preventDefault();
         } else {
           // There should be only one element with class name 'wrs_formulaDisplay'.
-          const element = document.getElementsByClassName('wrs_formulaDisplay')[0];
-          if (element.getAttribute('class') === 'wrs_formulaDisplay wrs_focused') {
+          const formulaDisplay = editorElement.querySelector('[class*="wrs_formulaDisplay"]');
+          if (formulaDisplay.className === 'wrs_formulaDisplay wrs_focused') {
             // Focus is on formuladisplay.
             this.modalDialogInstance.submitButton.focus();
             keyboardEvent.stopPropagation();
