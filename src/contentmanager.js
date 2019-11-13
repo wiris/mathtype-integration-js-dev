@@ -475,7 +475,8 @@ export default class ContentManager {
           if (editorElement.classList.contains('wrs_handOpen')) { // Hand mode is active.
             useKeyboardButton.focus();
           } else {
-            this.editor.focus();
+            const openHandButton = editorElement.querySelector('[title="Go to handwritten mode"]');
+            openHandButton.focus();
           }
           keyboardEvent.stopPropagation();
           keyboardEvent.preventDefault();
@@ -501,15 +502,6 @@ export default class ContentManager {
           }
           keyboardEvent.stopPropagation();
           keyboardEvent.preventDefault();
-        } else {
-          // There should be only one element with class name 'wrs_formulaDisplay'.
-          const formulaDisplay = editorElement.querySelector('[class*="wrs_formulaDisplay"]');
-          if (formulaDisplay.className === 'wrs_formulaDisplay wrs_focused') {
-            // Focus is on formuladisplay.
-            this.modalDialogInstance.submitButton.focus();
-            keyboardEvent.stopPropagation();
-            keyboardEvent.preventDefault();
-          }
         }
       }
     }
