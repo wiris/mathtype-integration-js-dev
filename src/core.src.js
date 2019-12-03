@@ -689,7 +689,10 @@ export default class Core {
     Object.assign(editorAttributes, defaultEditorAttributes, serverEditorParameters);
     Object.assign(editorAttributes, defaultEditorAttributes, cliendEditorParameters);
 
-    editorAttributes.language = this.language;
+    if (typeof editorAttributes.language === 'undefined') {
+      editorAttributes.language = this.language;
+    }
+
     editorAttributes.rtl = this.integrationModel.rtl;
 
     const contentManagerAttributes = {};
